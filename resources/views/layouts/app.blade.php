@@ -9,7 +9,7 @@
 
     <style type="text/tailwindcss">
         .btn {
-            @apply bg-red-400 rounded-md px-4 py-2 text-center font-medium text-slate-500 shadow-sm ring-1 ring-slate-700/10 hover:bg-slate-50 h-10;
+            @apply bg-white rounded-md px-4 py-2 text-center font-medium text-slate-500 shadow-sm ring-1 ring-slate-700/10 hover:bg-slate-50 h-10;
         }
 
         .input {
