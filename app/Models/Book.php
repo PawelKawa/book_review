@@ -28,7 +28,6 @@ class Book extends Model
 		return $query->withAvg([
 			'reviews' => fn(EloquentBuilder $q) => $this->dateRangeFilter($q, $from, $to)
 		], 'rating')
-		->withCount('reviews')
 		->orderBy('reviews_avg_rating', 'desc');
 	}
 	public function scopeHighestRatedAndReviews(EloquentBuilder $query): EloquentBuilder
@@ -53,5 +52,29 @@ class Book extends Model
 			return $query->where('created_at', '<=', $to);
 		}
 		return $query;
+	}
+	public function scopePopularLastMonth(EloquentBuilder $query): EloquentBuilder
+	{
+		return $query->popular(now()->subMonth(), now())
+			->highestRated(now()->subMonth(), now())
+			->minReviews(2);
+	}
+	public function scopePopularLast6Months(EloquentBuilder $query): EloquentBuilder
+	{
+		return $query->popular(now()->subMonths(6), now())
+			->highestRated(now()->subMonths(6), now())
+			->minReviews(5);
+	}
+	public function scopeHighestRatedLastMonth(EloquentBuilder $query): EloquentBuilder
+	{
+		return $query->highestRated(now()->subMonth(), now())
+			->popular(now()->subMonth(), now())
+			->minReviews(2);
+	}
+	public function scopeHighestRatedLast6Months(EloquentBuilder $query): EloquentBuilder
+	{
+		return $query->highestRated(now()->subMonths(6), now())
+			->popular(now()->subMonths(6), now())
+			->minReviews(5);
 	}
 }
