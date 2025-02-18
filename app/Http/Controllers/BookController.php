@@ -27,7 +27,14 @@ class BookController extends Controller
 			'highest_rated_last_6_months' => $books->highestRatedLast6Months(),
 			default => $books->latest(),
 		};
-		$books = $books->get();
+		// $books = $books->get();
+
+		$cache_key = 'books:' . $title . ':' . $filter;
+		$books = cache()->remember($cache_key, now()->addMinutes(60), function () use ($books) {
+			return $books->get();
+		});
+		Log::info('Cache Key:', ['key' => $cache_key]);
+		Log::info('Cache Value:', ['value' => cache()->get($cache_key)]);
 		Log::info('Books retrieved:', ['books' => $books->toArray()]);
 		return view('books.index', compact('books')); //only one parameter
 		// return view ('books.index', ['books' => $books, hello => 'world']); //two parameters
