@@ -55,15 +55,48 @@ class Book extends Model
 	}
 	public function scopePopularLastMonth(EloquentBuilder $query): EloquentBuilder
 	{
-		return $query->popular(now()->subMonth(), now())
-			->highestRated(now()->subMonth(), now())
-			->minReviews(2);
+		// return $query->popular(now()->subMonth(), now())
+		// 	->highestRated(now()->subMonth(), now())
+		// 	->minReviews(2);
+		return
+			Book::withCount([
+				'reviews' => function ($query) {
+					$query->whereBetween('created_at', [now()->subMonth(), now()]);
+				}
+			])
+			->having('reviews_count', '>=', 2)
+			->withAvg(
+				[
+					'reviews' => function ($query) {
+						$query->whereBetween('created_at', [now()->subMonth(), now()]);
+					}
+				],
+				'rating'
+			)
+			->orderBy('reviews_count', 'desc')
+			->orderBy('reviews_avg_rating', 'desc');
 	}
 	public function scopePopularLast6Months(EloquentBuilder $query): EloquentBuilder
 	{
-		return $query->popular(now()->subMonths(6), now())
-			->highestRated(now()->subMonths(6), now())
-			->minReviews(5);
+		// return $query->popular(now()->subMonths(6), now())
+		// 	->highestRated(now()->subMonths(6), now())
+		// 	->minReviews(5);
+		return Book::withCount([
+			'reviews' => function ($query) {
+				$query->whereBetween('created_at', [now()->subMonths(6), now()]);
+			}
+		])
+			->having('reviews_count', '>=', 5)
+			->withAvg(
+				[
+					'reviews' => function ($query) {
+						$query->whereBetween('created_at', [now()->subMonths(6), now()]);
+					}
+				],
+				'rating'
+			)
+			->orderBy('reviews_count', 'desc')
+			->orderBy('reviews_avg_rating', 'desc');
 	}
 	public function scopeHighestRatedLastMonth(EloquentBuilder $query): EloquentBuilder
 	{
