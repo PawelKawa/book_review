@@ -71,8 +71,8 @@ class BookController extends Controller
 		});
 		return view('books.show', [
 			'book' => $book,
-			'averageRating' => $book->reviews->avg('rating'),
-			'numberOfReviews' => $book->reviews->count()
+			// 'averageRating' => $book->reviews->avg('rating'),
+			// 'numberOfReviews' => $book->reviews->count()
 		]);
 	}
 
