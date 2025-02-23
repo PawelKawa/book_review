@@ -2,7 +2,7 @@
 
 @section('content')
     <div class="mb-4">
-        <h1 class="sticky top-0 mb-2 text-2xl">{{ $book->title }}</h1>
+        <h1 class="mb-2 text-2xl">{{ $book->title }}</h1>
 
         <div class="book-info">
             <div class="book-author mb-4 text-lg font-semibold">by {{ $book->author }}</div>
@@ -17,9 +17,10 @@
             </div>
         </div>
     </div>
-    <div class="mb-4">
-        <a href="{{ route('books.reviews.create', $book) }}" class="reset-link">
-            Add a review!</a>
+    <div class="mb-4 flex justify-between items-center">
+		<a href="{{ route('books.reviews.create', $book) }}" class="reset-link">
+			Add a review!</a>
+			<a href="{{route('books.index')}}" class="reset-link">Back to books</a>
     </div>
     <div>
         <h2 class="mb-4 text-xl font-semibold">Reviews</h2>

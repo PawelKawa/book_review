@@ -1,9 +1,12 @@
 @extends('layouts.app')
 
 @section('content')
-    <h1 class="mb-10 text-2xl">Add Review for {{ $book->title }}</h1>
-
-    <form method="POST" action="{{ route('books.reviews.store', $book) }}">
+    <h1 class="mb-10 text-2xl">Add Review for: <span class="font-bold block">{{ $book->title }}</span> </h1>
+	<div class="flex items-center justify-between">
+		<a href="{{ route('books.show', $book) }}" class="reset-link">Cancel</a>
+		<a href="{{ route('books.index') }}" class="reset-link">Back to books</a>
+	</div>
+    <form method="POST" action="{{ route('books.reviews.store', $book) }}" class="mt-8">
         @csrf
         <label for="review">Review</label>
         <textarea name="review" id="review" required class="input mb-4">{{ old('review') }}</textarea>
